@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>UndertowJaxrs server example</title>
+    <style>
+        #output {
+            text-align: center;
+            color: #565656;
+            white-space: pre;
+        }
+    </style>
+    <script type="module">
+        const outputEl = document.querySelector('#output');
+
+        const response = await fetch("/api/test", {
+            method: "POST",
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                sort: [],
+                page: 0,
+                pageSize: 0,
+                filter: {}
+            })
+        });
+
+        const data = await response.json();
+
+        outputEl.innerHTML = JSON.stringify(data, null, 4);
+    </script>
+</head>
+
+<body>
+    <h1>
+        Response from api
+    </h1>
+    <span id="output">
+        [no data]
+    </span>
+</body>
+
+</html>
