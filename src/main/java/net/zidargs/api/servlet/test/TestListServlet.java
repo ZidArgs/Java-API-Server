@@ -17,6 +17,8 @@ import java.util.List;
 @Path("test")
 public class TestListServlet {
 
+    private final DownloadListLoader downloadListLoader = new DownloadListLoader();
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +29,9 @@ public class TestListServlet {
 
             // START - collect records
             List<TestEntityData> entityDataList = TestRecordListBuilder.buildTestRecordList();
+
+            // List<TestEntityData> entityDataList = new ArrayList<>();
+            // downloadListLoader.loadDownloadList(entityDataList, requestData.page(), requestData.pageSize());
 
             SearchResponseData<TestEntityData> responseData = new SearchResponseData<>(
                     true,
