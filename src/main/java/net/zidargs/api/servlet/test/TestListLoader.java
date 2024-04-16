@@ -8,14 +8,16 @@ import java.util.List;
 
 public class TestListLoader {
 
-    private static final String queryTemplate = "SELECT * FROM test LIMIT %d OFFSET %d";
+    private static final String queryTemplate = "SELECT * FROM test LIMIT ? OFFSET ?";
 
     private final MySQLConnector mySQLConnector = MySQLConnector.getInstance();
 
     public void loadList(List<TestEntityData> entityDataList, int page, int pageSize) {
         int offset = page * pageSize;
-        String query = String.format(queryTemplate, pageSize, offset);
-        mySQLConnector.executeStatement(query, resultSet -> {
+        mySQLConnector.executeStatement(queryTemplate, statement -> {
+            statement.setInt(1, page);
+            statement.setInt(2, offset);
+        }, resultSet -> {
             while (resultSet.next()) {
                 String key = resultSet.getString("id");
                 String displayName = resultSet.getString("name");

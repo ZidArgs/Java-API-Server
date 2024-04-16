@@ -21,15 +21,26 @@ public class MySQLConnector {
     }
 
     public void executeStatement(String sqlStatement) {
-        executeStatement(sqlStatement, resultSet -> {});
+        executeStatement(sqlStatement, statement -> {}, resultSet -> {});
+    }
+
+    public void executeStatement(String sqlStatement, StatementConsumer statementConsumer) {
+        executeStatement(sqlStatement, statementConsumer, resultSet -> {});
     }
 
     public void executeStatement(String sqlStatement, ResultSetConsumer resultSetConsumer) {
-        Statement statement = null;
+        executeStatement(sqlStatement, statement -> {}, resultSetConsumer);
+    }
+
+    public void executeStatement(String sqlStatement, StatementConsumer statementConsumer, ResultSetConsumer resultSetConsumer) {
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = conn.createStatement();
-            if (statement.execute(sqlStatement)) {
+            statement = conn.prepareStatement(sqlStatement);
+
+            statementConsumer.consume(statement);
+
+            if (statement.execute()) {
                 resultSet = statement.getResultSet();
                 resultSetConsumer.consume(resultSet);
             }
