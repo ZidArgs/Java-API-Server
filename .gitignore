@@ -41,3 +41,4 @@ package-lock.json
 yarn-error.log
 yarn.lock
 src/main/resources/mysql-connection.properties
+/bin/
